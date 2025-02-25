@@ -1,6 +1,33 @@
 document.addEventListener("DOMContentLoaded", () => {
     gsap.registerPlugin(ScrollTrigger)
 
+    const particles = document.querySelectorAll(".particle")
+    particles.forEach((particle, index) => {
+        gsap.set(particle, {
+            x: Math.random() * window.innerWidth,
+            y: Math.random() * window.innerHeight,
+            scale: Math.random() * 0.5 + 0.5,
+        })
+
+        gsap.to(particle, {
+            duration: Math.random() * 10 + 5,
+            x: "+=100",
+            y: "+=100",
+            rotation: 360,
+            repeat: -1,
+            yoyo: true,
+            ease: "none",
+        })
+
+        gsap.to(particle, {
+            duration: Math.random() * 5 + 2,
+            scale: Math.random() * 0.5 + 0.5,
+            repeat: -1,
+            yoyo: true,
+            ease: "power1.inOut",
+        })
+    })
+
     const header = document.querySelector("header")
     window.addEventListener("scroll", () => {
         if (window.scrollY > 50) {
@@ -33,6 +60,30 @@ document.addEventListener("DOMContentLoaded", () => {
             ease: "power3.out",
         })
 
+    gsap.to(".hero-bg", {
+        yPercent: 50,
+        ease: "none",
+        scrollTrigger: {
+            trigger: "#hero",
+            start: "top top",
+            end: "bottom top",
+            scrub: true,
+        },
+    })
+
+    gsap.from(".hero-content", {
+        y: 100,
+        opacity: 0,
+        duration: 1.5,
+        ease: "power3.out",
+        scrollTrigger: {
+            trigger: "#hero",
+            start: "top center",
+            end: "center center",
+            scrub: 1,
+        },
+    })
+
     const fadeInElements = gsap.utils.toArray([
         ".about-content",
         ".skills-grid",
@@ -58,31 +109,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const projects = [
         {
-            title: "E-commerce Platform",
-            description: "Desarrollé una plataforma de comercio electrónico escalable utilizando React, Node.js y MongoDB.",
-            image: "/placeholder.svg?height=300&width=500",
-            link: "#",
+            title: "Facturacion_Frontend",
+            description:
+                "Creé una aplicación de gestión de facturas, clientes, proyectos, productos y empresas el fontend con Vue.",
+            image: "/Facturacion_Frontend.png?height=300&width=500",
+            link: "https://github.com/AndreuPuchades/Facturacion_Frontend",
         },
         {
-            title: "Análisis de Datos de Redes Sociales",
+            title: "Facturacion_Backend",
+            description:
+                "Creé una aplicación de gestión de facturas, clientes, proyectos, productos y empresas el backend con Laravel.",
+            image: "/Facturacion_Backend.png?height=300&width=500",
+            link: "https://github.com/FacturacionApp/Facturacion_Backend",
+        },
+        {
+            title: "MarketPlace-Freelancer",
+            description:
+                "Creé una aplicación de un market place de freelancer que este fue mi proyecto final lo hice con PHP y Vue",
+            image: "/MarketPlace.png?height=300&width=500",
+            link: "https://github.com/orgs/MarketPlace-Freelancer/repositories",
+        },
+        {
+            title: "BatoiBook-vue ",
             description:
                 "Implementé un sistema de análisis de sentimientos en tiempo real para datos de redes sociales utilizando Python y Apache Kafka.",
-            image: "/placeholder.svg?height=300&width=500",
-            link: "#",
+            image: "/BatoiBooks-vue.png?height=300&width=500",
+            link: "https://github.com/AndreuPuchades/batoibook-vue",
         },
         {
-            title: "Aplicación de Gestión de Tareas",
-            description:
-                "Creé una aplicación de gestión de tareas con sincronización en tiempo real utilizando Vue.js y Firebase.",
-            image: "/placeholder.svg?height=300&width=500",
-            link: "#",
-        },
-        {
-            title: "Dashboard de Visualización de Datos",
-            description:
-                "Diseñé y desarrollé un dashboard interactivo para visualizar grandes conjuntos de datos utilizando D3.js y React.",
-            image: "/placeholder.svg?height=300&width=500",
-            link: "#",
+            title: "BatoiBooks-php",
+            description: "Desarrollé una plataforma de comercio electrónico escalable utilizando React, Node.js y MongoDB.",
+            image: "/BatoiBooks-php.png?height=300&width=500",
+            link: "https://github.com/AndreuPuchades/BatoiBooks-php",
         },
     ]
 
@@ -103,17 +161,17 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     }
 
-    gsap.from('#projects .section-title', {
+    gsap.from("#projects .section-title", {
         scrollTrigger: {
-            trigger: '#projects',
-            start: 'top bottom-=100px',
-            toggleActions: 'play none none reverse'
+            trigger: "#projects",
+            start: "top bottom-=100px",
+            toggleActions: "play none none reverse",
         },
         y: 50,
         opacity: 0,
         duration: 1,
-        ease: 'power3.out'
-    });
+        ease: "power3.out",
+    })
 
     renderProjects()
 
@@ -136,4 +194,39 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("Gracias por tu mensaje. Te contactaré pronto.")
         contactForm.reset()
     })
+
+    const sections = document.querySelectorAll("section")
+    sections.forEach((section) => {
+        gsap.from(section, {
+            opacity: 0,
+            y: 50,
+            duration: 1,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: section,
+                start: "top 80%",
+                end: "top 20%",
+                scrub: 1,
+            },
+        })
+    })
+
+    const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        direction: "vertical",
+        gestureDirection: "vertical",
+        smooth: true,
+        mouseMultiplier: 1,
+        smoothTouch: false,
+        touchMultiplier: 2,
+        infinite: false,
+    })
+
+    function raf(time) {
+        lenis.raf(time)
+        requestAnimationFrame(raf)
+    }
+
+    requestAnimationFrame(raf)
 })
